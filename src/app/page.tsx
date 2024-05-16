@@ -9,6 +9,7 @@ import { useAccount } from 'wagmi'
 
 const today = new Date()
 const spender = '0xd4da9d6cD72cEDC68ed253312a035a934954BbB8'
+const tokenContract = '0xCd777A747c9e48DB72092238e02eB1d00CAd098F'
 const tomorrow = new Date(today).setDate(today.getDate() + 1)
 
 function Home() {
@@ -16,7 +17,7 @@ function Home() {
 
   const permitParams: PermitParams = useMemo(() => {
     return {
-      verifyingContract: '0xCd777A747c9e48DB72092238e02eB1d00CAd098F', // token contract
+      verifyingContract: tokenContract,
       spender,
       deadline: BigInt(tomorrow),
       amount: BigInt(184),
@@ -37,9 +38,6 @@ function Home() {
     spender: permitParams.spender,
     enabled: true,
   })
-  // console.log('signPermitPending', signPermitPending)
-  // console.log('callPermitPending', callPermitPending)
-  // console.log('allowanceLoading', allowanceLoading)
   const error = signPermitError || callPermitError || allowanceError
   const isPending = signPermitPending || callPermitPending || allowanceLoading
 
@@ -50,7 +48,13 @@ function Home() {
       ) : (
         <>
           <div>
-            <div className="text-4xl">You must approve spending tokens for the address: {spender}</div>
+            <div className="text-4xl">
+              You must approve spending
+              <a className="text-cyan-400" href={`https://sepolia.etherscan.io/address/${tokenContract}`}>
+                &nbsp;tokens&nbsp;
+              </a>
+              for the address: {spender}
+            </div>
             <div className="text-4xl">You have currently approved {Number(allowedAmount)} tokens</div>
           </div>
 

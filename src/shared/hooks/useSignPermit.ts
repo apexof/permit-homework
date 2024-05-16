@@ -29,7 +29,7 @@ export const useSignPermit = (params: PermitParams) => {
   })
 
   const signPermit = useCallback(() => {
-    if (!owner || !nonce || !name || !spender) {
+    if (!owner || nonce === undefined || !name || !spender) {
       return
     }
 
